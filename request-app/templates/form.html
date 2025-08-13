@@ -14,7 +14,22 @@
         .flash { margin-top: 16px; padding: 10px; border-radius: 4px; }
         .flash.error { background: #f8d7da; color: #721c24; }
         .flash.success { background: #d4edda; color: #155724; }
-    </style>
+  .env-checkbox-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+    margin-bottom: 16px;
+  }
+  .env-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 15px;
+  }
+  </style>
 </head>
 <body>
     <div class="container">
@@ -27,19 +42,22 @@
           {% endif %}
         {% endwith %}
         <form method="post">
-            <label for="app_name">App Name</label>
-            <input type="text" id="app_name" name="app_name" required>
 
-            <label for="environment">Environment</label>
-            <select id="environment" name="environment" required>
-                <option value="">Select...</option>
-                <option value="dev">Dev</option>
-                <option value="qa">QA</option>
-                <option value="prod">Prod</option>
-            </select>
+      <label for="platform">Platform</label>
+      <input type="text" id="platform" name="platform" required>
 
-            <label for="project_code">Project Code</label>
-            <input type="text" id="project_code" name="project_code" required>
+      <label for="project_code">Project Code</label>
+      <input type="text" id="project_code" name="project_code" required>
+
+      <label for="app_name">App Name</label>
+      <input type="text" id="app_name" name="app_name" required>
+
+      <label>Environment</label>
+      <div class="env-checkbox-group">
+        <label class="env-checkbox"><input type="checkbox" name="environment" value="dev"> Dev</label>
+        <label class="env-checkbox"><input type="checkbox" name="environment" value="qa"> QA</label>
+        <label class="env-checkbox"><input type="checkbox" name="environment" value="prod"> Prod</label>
+      </div>
 
             <button type="submit">Submit</button>
         </form>
