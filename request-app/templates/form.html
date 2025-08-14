@@ -41,25 +41,42 @@
             {% endfor %}
           {% endif %}
         {% endwith %}
-        <form method="post">
+  <form method="post" onsubmit="return validateEnvironment()">
 
-      <label for="platform">Platform</label>
-      <input type="text" id="platform" name="platform" required>
 
-      <label for="project_code">Project Code</label>
-      <input type="text" id="project_code" name="project_code" required>
+
+  <!-- ...existing code... -->
+
+  <label for="platform">Platform</label>
+  <input type="text" id="platform" name="platform" required value="Data">
+
+  <label for="project_code">Project Code</label>
+  <input type="text" id="project_code" name="project_code" required value="776620">
 
       <label for="app_name">App Name</label>
       <input type="text" id="app_name" name="app_name" required>
 
-      <label>Environment</label>
-      <div class="env-checkbox-group">
-        <label class="env-checkbox"><input type="checkbox" name="environment" value="dev"> Dev</label>
-        <label class="env-checkbox"><input type="checkbox" name="environment" value="qa"> QA</label>
-        <label class="env-checkbox"><input type="checkbox" name="environment" value="prod"> Prod</label>
-      </div>
+      <label for="environment">Environment</label>
+      <select id="environment" name="environment" required style="margin-bottom: 16px;">
+        <option value="dev" selected>Dev</option>
+        <option value="qa">QA</option>
+        <option value="prod">Prod</option>
+      </select>
 
-            <button type="submit">Submit</button>
+      <label for="network">Network</label>
+      <select id="network" name="network" required style="margin-bottom: 16px;">
+        <option value="internal" selected>Internal</option>
+        <option value="restricted">Restricted</option>
+        <option value="secure">Secure</option>
+      </select>
+
+      <label for="region">Region</label>
+      <select id="region" name="region" required style="margin-bottom: 16px;">
+        <option value="australiaeast">Australia East</option>
+        <option value="newzealandnorth" selected>New Zealand North</option>
+      </select>
+
+      <button type="submit">Submit</button>
         </form>
     </div>
 </body>
