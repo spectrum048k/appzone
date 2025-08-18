@@ -20,5 +20,5 @@ secrets.auto.tfvars
 # IDE and OS
 .DS_Store
 
-# Appzone submissions
-submissions/
+# Appzone config
+config/

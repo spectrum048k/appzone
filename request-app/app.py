@@ -8,8 +8,8 @@ from config import Config
 
 app = Flask(__name__)
 app.secret_key = Config.SECRET_KEY
-SUBMISSIONS_DIR = Config.SUBMISSIONS_DIR
-os.makedirs(SUBMISSIONS_DIR, exist_ok=True)
+CONFIG_DIR = Config.CONFIG_DIR
+os.makedirs(CONFIG_DIR, exist_ok=True)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -26,22 +26,24 @@ def index():
             flash('All fields are required!', 'error')
             return redirect(url_for('index'))
 
-        submission_id = str(uuid.uuid4())
+        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+        safe_platform = platform.replace(' ', '')
+        safe_app_name = app_name.replace(' ', '')
+        safe_environment = environment.replace(' ', '')
+        filename = f"{safe_platform}_{safe_app_name}_{safe_environment}_{timestamp}.json"
         data = {
-            'id': submission_id,
             'app_name': app_name,
-            'environment': environment,  # Now a single value
+            'environment': environment,
             'network': network,
             'region': region,
             'platform': platform,
             'project_code': project_code,
-            'timestamp': datetime.utcnow().isoformat()
+            'timestamp': timestamp
         }
-        filename = f"{submission_id}.json"
-        filepath = os.path.join(SUBMISSIONS_DIR, filename)
+        filepath = os.path.join(CONFIG_DIR, filename)
         with open(filepath, 'w') as f:
             json.dump(data, f, indent=2)
-        flash(f'Submission saved successfully! Your request ID is: {submission_id}', 'success')
+        flash(f'Submission saved successfully! Your request file is: {filename}', 'success')
         return redirect(url_for('index'))
     return render_template('form.html')
 

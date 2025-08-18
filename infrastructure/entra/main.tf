@@ -1,18 +1,17 @@
-resource "azurerm_user_assigned_identity" "sp" {
-  name                = local.sp_name
-  location            = local.submission.region
-  resource_group_name = var.resource_group_name
-}
-
-terraform {
-  required_version = ">= 1.0.0"
-}
-
 locals {
-  submission = jsondecode(file("../../submissions/90f491e1-4af9-42e0-955e-34ce21e1ca38.json"))
-  sp_name = "sp-${replace(local.submission.platform, " ", "")}-${replace(local.submission.app_name, " ", "")}-${replace(local.submission.environment, " ", "" )}"
+  config_files = fileset(var.config_dir, "*.json")
+  apps = [for f in local.config_files : jsondecode(file("${var.config_dir}/${f}"))]
 }
 
-output "app_name" {
-  value = local.submission.app_name
+resource "azurerm_user_assigned_identity" "sp" {
+  for_each = {
+    for app in local.apps :
+    "${replace(app.platform, " ", "")}_${replace(app.app_name, " ", "")}_${replace(app.environment, " ", "" )}" => app
+  }
+  name                = "sp-${replace(each.value.platform, " ", "")}-${replace(each.value.app_name, " ", "")}-${replace(each.value.environment, " ", "")}" 
+  location            = each.value.region
+  resource_group_name = var.resource_group_name
+  tags = {
+    deployment = "terraform"
+  }
 }
